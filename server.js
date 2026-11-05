@@ -421,7 +421,6 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error("MongoDB connection failed:", error.message);
     process.exit(1);
   });
-'''
 }
 for rel, content in files.items():
     p=os.path.join(root,rel)
