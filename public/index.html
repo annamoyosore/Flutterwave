@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My ATM Payment</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+
+  <main class="page-shell">
+    <section class="payment-card">
+
+      <div class="brand-mark">₦</div>
+
+      <p class="eyebrow">SECURE CHECKOUT</p>
+
+      <h1>My ATM Payment</h1>
+
+      <p class="muted">
+        Make a secure payment using your preferred payment method.
+      </p>
+
+      <form id="paymentForm">
+
+        <label for="name">Full Name</label>
+        <input
+          id="name"
+          type="text"
+          maxlength="100"
+          required
+          placeholder="Enter your full name"
+        >
+
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          required
+          placeholder="Enter your email"
+        >
+
+        <label for="amount">Payment Amount (₦)</label>
+
+        <div class="amount-wrap">
+          <span>₦</span>
+          <input
+            id="amount"
+            type="number"
+            min="100"
+            max="10000000"
+            required
+            placeholder="5000"
+          >
+        </div>
+
+        <button id="payButton" type="submit">
+          Continue to Payment
+        </button>
+
+        <p id="message" class="message"></p>
+
+      </form>
+
+      <div class="secure-note">
+        🔒 Secure payment powered by Flutterwave.
+      </div>
+
+      <div class="methods">
+        ATM CARD • BANK TRANSFER • USSD
+      </div>
+
+      <a href="/admin.html" class="admin-link">
+        Admin Dashboard
+      </a>
+
+    </section>
+
+    <footer>
+      Payments are securely processed by Flutterwave.
+    </footer>
+
+  </main>
+
+</body>
+</html>
