@@ -1,22 +1,50 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Payment Result</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Payment Status</title>
+
   <link rel="stylesheet" href="/style.css">
+
 </head>
+
 <body>
-  <main class="container">
-    <section class="payment-card">
-      <div class="logo" id="resultIcon">✓</div>
-      <h1 id="resultTitle">Checking payment...</h1>
-      <p id="resultText">Please wait while we verify your payment.</p>
-      <a href="/" class="home-link">Return to payment page</a>
+
+  <main class="page">
+
+    <section class="payment-card result-card">
+
+      <div class="result-icon" id="result-icon">
+        ...
+      </div>
+
+      <p class="eyebrow">PAYMENT RESULT</p>
+
+      <h1 id="result-title">
+        Checking your payment
+      </h1>
+
+      <p id="result-message" class="intro">
+        Please wait while we verify your transaction with Flutterwave.
+      </p>
+
+      <a class="button-link" href="/">
+        Return to payment page
+      </a>
+
+      <p class="footer-note">
+        Do not make another payment while this page is checking your transaction.
+      </p>
+
     </section>
+
   </main>
 
   <script src="/success.js"></script>
+
 </body>
 </html>
