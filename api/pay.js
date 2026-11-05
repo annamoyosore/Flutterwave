@@ -1,63 +1,99 @@
-
 const {
-  flutterwave,
-  createReference
-} = require("./helpers");
+  flwRequest,
+  createTxRef,
+  requiredEnv
+} = require("../lib/flutterwave");
 
 module.exports = async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+  res.setHeader("Cache-Control", "no-store");
 
-  if (!process.env.FLW_SECRET_KEY || !process.env.BASE_URL) {
-    return res.status(500).json({ error: "Server configuration missing" });
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+
+    return res.status(405).json({
+      error: "Method not allowed."
+    });
   }
 
   try {
-    const { amount, email } = req.body || {};
+    const email = String(req.body?.email || "")
+      .trim()
+      .toLowerCase();
 
-    const value = Number(amount);
-    const min = Number(process.env.MIN_AMOUNT || 100);
-    const max = Number(process.env.MAX_AMOUNT || 10000000);
+    const consent = req.body?.consent === true;
 
-    if (!Number.isFinite(value) || value < min || value > max) {
-      return res.status(400).json({ error: "Invalid payment amount" });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({
+        error: "Enter a valid email address."
+      });
     }
 
-    if (
-      typeof email !== "string" ||
-      !/^\S+@\S+\.\S+$/.test(email.trim())
-    ) {
-      return res.status(400).json({ error: "Enter a valid email" });
+    if (!consent) {
+      return res.status(400).json({
+        error: "You must agree to the hourly recurring charge."
+      });
     }
 
-    const reference = createReference(value);
+    const planId = Number(
+      requiredEnv("FLW_PAYMENT_PLAN_ID")
+    );
 
-    const result = await flutterwave("/payments", {
+    if (!Number.isSafeInteger(planId) || planId <= 0) {
+      throw new Error("Invalid Flutterwave Payment Plan ID.");
+    }
+
+    const baseUrl = requiredEnv("BASE_URL")
+      .replace(/\/+$/, "");
+
+    const txRef = createTxRef();
+
+    const result = await flwRequest("/payments", {
       method: "POST",
+
       body: JSON.stringify({
-        tx_ref: reference,
-        amount: value,
-        currency: process.env.CURRENCY || "NGN",
-        redirect_url: `${process.env.BASE_URL}/success.html`,
-        payment_options: "card,banktransfer,ussd",
+        tx_ref: txRef,
+
+        amount: 10000,
+
+        currency: "NGN",
+
+        redirect_url: `${baseUrl}/success.html`,
+
         customer: {
-          email: email.trim()
+          email
         },
+
+        payment_plan: planId,
+
+        payment_options: "card",
+
         customizations: {
-          title: process.env.SITE_NAME || "My ATM Payment",
-          description: "Secure payment"
+          title: "Hourly Subscription",
+          description: "₦10,000 recurring every hour"
+        },
+
+        meta: {
+          subscription_interval: "hourly",
+          customer_consent: "hourly_recurring_charge"
         }
       })
     });
 
+    const checkoutUrl = result.data?.link;
+
+    if (!checkoutUrl) {
+      throw new Error("Flutterwave did not return a checkout link.");
+    }
+
     return res.status(200).json({
-      checkoutUrl: result.data.link
+      checkout_url: checkoutUrl
     });
 
   } catch (error) {
+    console.error("Checkout error:", error.message);
+
     return res.status(500).json({
-      error: error.message || "Payment initialization failed"
+      error: "Unable to start payment. Please try again later."
     });
   }
 };
