@@ -1,3 +1,8 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f1f5f9;
+  color: #102a43;
+}
 
 * {
   box-sizing: border-box;
@@ -6,100 +11,280 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #eaf4ff, #e9fff6);
-  font-family: Arial, sans-serif;
-  color: #172b43;
 }
 
-.container {
-  width: 100%;
-  max-width: 440px;
+.page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+
+  background:
+    radial-gradient(circle at top right, #dbeafe 0, transparent 38%),
+    #f1f5f9;
 }
 
 .payment-card {
+  width: min(100%, 470px);
+  padding: 34px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 22px;
+
   background: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 15px 45px #12345618;
+
+  box-shadow: 0 18px 55px rgba(16, 42, 67, 0.10);
 }
 
-.logo {
-  width: 55px;
-  height: 55px;
+.brand-mark {
+  width: 44px;
+  height: 44px;
+
   display: grid;
   place-items: center;
-  background: #1267c5;
-  color: white;
-  border-radius: 15px;
-  font-size: 30px;
-  font-weight: bold;
+
+  border-radius: 13px;
+
+  background: #e0f2fe;
+  color: #0369a1;
+
+  font-weight: 800;
+}
+
+.eyebrow {
+  margin: 24px 0 8px;
+
+  color: #0b82b8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
 }
 
 h1 {
-  margin-bottom: 8px;
+  margin: 0;
+
+  font-size: clamp(27px, 6vw, 34px);
+
+  letter-spacing: -0.04em;
 }
 
-p {
-  color: #66768b;
-  line-height: 1.5;
+.intro {
+  color: #526579;
+
+  line-height: 1.6;
+
+  font-size: 14px;
 }
 
-label {
+.price-panel {
+  display: flex;
+  align-items: baseline;
+
+  gap: 10px;
+
+  flex-wrap: wrap;
+
+  margin: 24px 0;
+
+  padding: 20px;
+
+  border-radius: 15px;
+
+  background: #eff6ff;
+}
+
+.price {
+  font-size: 32px;
+
+  font-weight: 800;
+
+  color: #075985;
+}
+
+.frequency {
+  color: #31566f;
+
+  font-weight: 650;
+}
+
+label:not(.consent) {
   display: block;
-  margin: 20px 0 8px;
-  font-weight: bold;
+
+  margin: 18px 0 8px;
+
+  font-size: 13px;
+
+  font-weight: 700;
 }
 
-input {
+input[type="email"] {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #d6e0ec;
+
+  padding: 14px 13px;
+
+  border: 1px solid #cbd5e1;
+
   border-radius: 10px;
-  font-size: 16px;
+
+  font: inherit;
+
+  outline: none;
 }
 
-button {
+input[type="email"]:focus {
+  border-color: #0284c7;
+
+  box-shadow: 0 0 0 3px #e0f2fe;
+}
+
+.consent {
+  display: flex;
+
+  gap: 10px;
+
+  align-items: flex-start;
+
+  margin: 18px 0;
+
+  color: #475569;
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
+.consent input {
+  margin-top: 3px;
+
+  flex: 0 0 auto;
+}
+
+button,
+.button-link {
   width: 100%;
-  padding: 15px;
-  margin-top: 24px;
-  border: none;
-  border-radius: 10px;
-  background: #1267c5;
+
+  display: inline-flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 14px 16px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background: #087eae;
+
   color: white;
-  font-size: 16px;
-  font-weight: bold;
+
+  font: inherit;
+
+  font-weight: 750;
+
+  text-decoration: none;
+
   cursor: pointer;
 }
 
-button:disabled {
-  opacity: .6;
+button:hover,
+.button-link:hover {
+  background: #06658d;
 }
 
-#message {
+button:disabled {
+  opacity: 0.65;
+
+  cursor: wait;
+}
+
+.message {
+  min-height: 18px;
+
   color: #b42318;
+
   font-size: 13px;
 }
 
-.secure {
+.notice {
   margin-top: 22px;
-  padding: 13px;
-  background: #f0faf5;
-  color: #267454;
-  border-radius: 10px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background: #fff7ed;
+
+  color: #7c3f10;
+
   font-size: 12px;
+
+  line-height: 1.55;
 }
 
-.home-link {
-  display: block;
-  margin-top: 25px;
-  padding: 14px;
-  border-radius: 10px;
-  background: #1267c5;
-  color: white;
-  text-decoration: none;
+.notice p {
+  margin: 5px 0 0;
+}
+
+.footer-note {
+  margin: 20px 0 0;
+
+  color: #718096;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
   text-align: center;
-  font-weight: bold;
+}
+
+.result-card {
+  text-align: center;
+}
+
+.result-icon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  margin: 0 auto;
+
+  border-radius: 50%;
+
+  background: #e2e8f0;
+
+  color: #334155;
+
+  font-size: 30px;
+
+  font-weight: 800;
+}
+
+.result-icon.success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.result-icon.warning {
+  background: #fef3c7;
+  color: #a16207;
+}
+
+.result-card .button-link {
+  margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+
+  .payment-card {
+    padding: 25px 20px;
+
+    border-radius: 18px;
+  }
+
 }
