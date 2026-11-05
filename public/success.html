@@ -1,43 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Payment Successful</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <script src="success.js" defer></script>
+  <title>Payment Result</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
-
 <body>
-
-  <main class="page-shell">
-
-    <section class="payment-card success">
-
-      <div class="brand-mark">✓</div>
-
-      <p class="eyebrow">PAYMENT VERIFIED</p>
-
-      <h1>Payment Successful!</h1>
-
-      <p class="muted">
-        Your payment has been verified successfully.
-      </p>
-
-      <p class="ref" id="reference"></p>
-
-      <a href="/">
-        Return to Payment Page
-      </a>
-
+  <main class="container">
+    <section class="payment-card">
+      <div class="logo" id="resultIcon">✓</div>
+      <h1 id="resultTitle">Checking payment...</h1>
+      <p id="resultText">Please wait while we verify your payment.</p>
+      <a href="/" class="home-link">Return to payment page</a>
     </section>
-
   </main>
 
+  <script src="/success.js"></script>
 </body>
-
 </html>
