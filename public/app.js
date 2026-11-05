@@ -1,68 +1,38 @@
+
 const form = document.getElementById("paymentForm");
-
 const button = document.getElementById("payButton");
-
 const message = document.getElementById("message");
 
-const params = new URLSearchParams(window.location.search);
-
-if (params.has("payment")) {
-  message.textContent =
-    "Payment was not completed or could not be verified. Please check your transaction before trying again.";
-}
-
-form.addEventListener("submit", async function(event) {
-
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  button.disabled = true;
+  button.textContent = "Preparing checkout...";
   message.textContent = "";
 
-  button.disabled = true;
-
-  button.textContent = "Preparing secure checkout...";
-
   try {
+    const amount = Number(document.getElementById("amount").value);
+    const email = document.getElementById("email").value.trim();
 
     const response = await fetch("/api/pay", {
-
       method: "POST",
-
       headers: {
         "Content-Type": "application/json"
       },
-
-      body: JSON.stringify({
-
-        name: document.getElementById("name").value,
-
-        email: document.getElementById("email").value,
-
-        amount: document.getElementById("amount").value
-
-      })
-
+      body: JSON.stringify({ amount, email })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Payment could not start.");
+      throw new Error(data.error || "Payment failed");
     }
 
-    if (!data.link || !data.link.startsWith("https://")) {
-      throw new Error("Invalid checkout link.");
-    }
-
-    window.location.href = data.link;
+    window.location.href = data.checkoutUrl;
 
   } catch (error) {
-
     message.textContent = error.message;
-
     button.disabled = false;
-
     button.textContent = "Continue to Payment";
-
   }
-
 });
