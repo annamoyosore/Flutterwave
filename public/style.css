@@ -91,3 +91,15 @@ button:disabled {
   border-radius: 10px;
   font-size: 12px;
 }
+
+.home-link {
+  display: block;
+  margin-top: 25px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #1267c5;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+}
