@@ -1,56 +1,66 @@
-
 const {
-  flutterwave,
-  verifyReference
-} = require("./helpers");
+  flwRequest,
+  isValidTxRef
+} = require("../lib/flutterwave");
 
 module.exports = async function handler(req, res) {
+  res.setHeader("Cache-Control", "no-store");
+
   if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+    res.setHeader("Allow", "GET");
+
+    return res.status(405).json({
+      error: "Method not allowed."
+    });
   }
 
-  if (!process.env.FLW_SECRET_KEY) {
-    return res.status(500).json({ error: "Server configuration missing" });
-  }
+  const transactionId = String(
+    req.query.transaction_id || ""
+  ).trim();
 
-  const id = String(req.query.transaction_id || "");
-
-  if (!/^\d+$/.test(id)) {
-    return res.status(400).json({ error: "Invalid transaction ID" });
+  if (!/^\d+$/.test(transactionId)) {
+    return res.status(400).json({
+      error: "Invalid transaction ID."
+    });
   }
 
   try {
-    const result = await flutterwave(
-      `/transactions/${encodeURIComponent(id)}/verify`
+    const result = await flwRequest(
+      `/transactions/${encodeURIComponent(transactionId)}/verify`,
+      {
+        method: "GET"
+      }
     );
 
-    const payment = result.data || {};
-    const expectedAmount = verifyReference(payment.tx_ref);
+    const data = result.data || {};
 
     const valid =
-      payment.status === "successful" &&
-      expectedAmount !== null &&
-      Number(payment.amount) === expectedAmount &&
-      payment.currency === (process.env.CURRENCY || "NGN");
+      data.status === "successful" &&
+      Number(data.amount) === 10000 &&
+      data.currency === "NGN" &&
+      isValidTxRef(data.tx_ref);
 
     if (!valid) {
       return res.status(400).json({
-        success: false,
-        error: "Payment could not be verified"
+        verified: false,
+        message: "Payment could not be verified."
       });
     }
 
     return res.status(200).json({
-      success: true,
-      amount: payment.amount,
-      currency: payment.currency,
-      reference: payment.tx_ref
+      verified: true,
+      amount: 10000,
+      currency: "NGN",
+      interval: "hourly",
+      message:
+        "Your first payment was verified. Check your Flutterwave subscription status for recurring billing."
     });
 
   } catch (error) {
-    return res.status(502).json({
-      success: false,
-      error: "Payment verification failed"
+    console.error("Verification error:", error.message);
+
+    return res.status(500).json({
+      error: "Unable to verify payment right now."
     });
   }
 };
